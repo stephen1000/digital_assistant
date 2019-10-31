@@ -66,8 +66,6 @@ class TweenQuadratic(TweeningAlgorithm):
         return t ** pwr
 
 
-
-
 class TweenRandomStep(TweeningAlgorithm):
     """ Tween a random amount of progress forward, up to a max (default .1)"""
 
