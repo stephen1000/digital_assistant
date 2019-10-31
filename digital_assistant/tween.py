@@ -6,7 +6,7 @@ class Tweener(object):
     """ A tweener object that provides intermediate values for
     a given range of time, based on a provided algorithm object """
     
-    def __init__(self, algorithm:tweening_algorithms.TweeningAlgorithm, lo:float=0.0, hi:float=0.0):
+    def __init__(self, algorithm:tweening_algorithms.TweeningAlgorithm, lo:float=0.0, hi:float=1.0):
         self.algorithm = algorithm
         self.lo = lo
         self.hi = hi
@@ -19,3 +19,8 @@ class Tweener(object):
     def _fit_to_range(self, val: float) -> float:
         """ fits a normalized value into this object's range of values """
         return self.lo + (val * self.range)
+
+    def get_pos(self, t:float) -> float:
+        """ gets the position at %time t """
+        pos = self.algorithm.get_pos(t)
+        return self._fit_to_range(pos)

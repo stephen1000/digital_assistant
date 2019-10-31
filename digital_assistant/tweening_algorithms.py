@@ -1,7 +1,8 @@
 """ Algorithms used for tweening values """
 
 import random
-from abc import ABC
+
+# from abc import ABC
 
 # assume val is between 0 and 1
 # return pos between 0 and 1
@@ -9,7 +10,7 @@ MAX_POS = 1
 MIN_POS = 0
 
 
-class TweeningAlgorithm(ABC):
+class TweeningAlgorithm(object):
     """ A tweening algorithm, used to determine where an object should be
     along a range, given a % progress """
 
@@ -74,5 +75,7 @@ class TweenRandomStep(TweeningAlgorithm):
 
     def _calc(self, t: float, max_step: float = None) -> float:
         """ Random step algorithm """
-        step = random.randrange(max_step * 100) / 100
+        if max_step is None:
+            max_step = self.max_step
+        step = random.uniform(0, max_step)
         return t + step
