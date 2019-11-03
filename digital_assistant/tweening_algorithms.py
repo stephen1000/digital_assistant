@@ -1,5 +1,5 @@
 """ Algorithms used for tweening values """
-
+import math
 import random
 
 # from abc import ABC
@@ -38,6 +38,8 @@ class TweeningAlgorithm(object):
         pos = self._calc(t, **kwargs)
         if pos > self.max_pos:
             return self.max_pos
+        if pos < self.min_pos:
+            return self.min_pos
         return pos
 
 
@@ -77,5 +79,38 @@ class TweenRandomStep(TweeningAlgorithm):
         """ Random step algorithm """
         if max_step is None:
             max_step = self.max_step
-        step = random.uniform(0, max_step)
+        step = random.uniform(-1 * max_step, max_step)
         return t + step
+
+
+class TweenSinusoidal(TweeningAlgorithm):
+    """ Follow a sin wave """
+
+    def __init__(self, amplitude: float = 0.5, yint: float = 0.5):
+        self.amplitude = amplitude
+        self.yint = yint
+
+    def _calc(self, t: float, amplitude: float = None, yint: float = 0.5):
+        if amplitude is None:
+            amplitude = self.amplitude
+        if yint is None:
+            yint = self.yint
+
+        return amplitude * math.sin(math.pi * 2 * t) + yint
+
+
+class TweenExponential(TweeningAlgorithm):
+    """ e^x """
+
+    def __init__(self, base: float = math.e, scale: float = 3):
+        self.base = base
+        self.scale = scale
+
+    def _calc(self, t: float, base: float = None, scale: float = None):
+        if base is None:
+            base = self.base
+        if scale is None:
+            scale = self.scale
+
+        return base ** (scale * t - scale)
+
